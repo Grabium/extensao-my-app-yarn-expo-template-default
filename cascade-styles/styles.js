@@ -11,10 +11,20 @@ const styles = StyleSheet.create({
 
     itemContainer:{
         flex:1,
-        alignItems:'center',
         justifyContent:'center',
         backgroundColor: '#ddddff',
         margin:15
+    },
+
+    pressContainer:{
+        backgroundColor:'#d6d6f6',
+        alignItems:'center'
+    },
+
+    itemLabel:{
+        flex:1,
+        alignItems:'flex-start',
+        textAlign:'left'
     },
 
     text:{
@@ -30,8 +40,8 @@ const styles = StyleSheet.create({
 
     textInput:{
         height: 65, 
-        width:150,
-        maxWidth: 250,
+        width:350,
+        maxWidth: 500,
         borderColor: 'green', 
         borderWidth: 2,
         borderRadius: 10,

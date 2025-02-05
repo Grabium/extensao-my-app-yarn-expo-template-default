@@ -1,4 +1,4 @@
-import { View, Text, Pressable, Alert, Modal, Button, TextInput } from "react-native";
+import { View, Text, Pressable, Alert, Modal, Button, TextInput, Keyboard } from "react-native";
 import styles from '../cascade-styles/styles';
 import cadastro from "../src/controllers/Cadastro";
 import { useState } from "react";
@@ -14,6 +14,7 @@ function ItemUser({itemUser}){
     const [isUpdModalVisible, setUpdModalVisible] = useState(false);
 
     function deletar(){
+        Keyboard.dismiss();
         
         cadastro.exclude(itemUser.id)
         .then((resp)=>{
@@ -24,6 +25,7 @@ function ItemUser({itemUser}){
     }
 
     function atualizar(){
+        Keyboard.dismiss();
         const user = new User(uname, itemUser.email, 'sehnaFalsa', uabout);
 
         cadastro.update(user, itemUser.id)
@@ -37,10 +39,23 @@ function ItemUser({itemUser}){
 
     return(
         <View style={styles.itemContainer}>
-            <Text style={styles.itemtexto}>Id:.......{itemUser.id}</Text>
-            <Text style={styles.itemtexto}>Nome:.....{itemUser.name}</Text>
-            <Text style={styles.itemtexto}>Email:....{itemUser.email}</Text>
-            <Text style={styles.itemtexto}>About Me:.{itemUser.about}</Text>
+            <View style={styles.itemLabel}>
+                <Text style={styles.itemtexto}>Id:.............{itemUser.id}</Text>
+                <Text style={styles.itemtexto}>Nome:.....{itemUser.name}</Text>
+                <Text style={styles.itemtexto}>Email:......{itemUser.email}</Text>
+                <Text style={styles.itemtexto}>Sobre:.....{itemUser.about}</Text>
+            </View>
+
+            <View style={styles.pressContainer}>
+                <Pressable style={styles.button} onPress={()=>setDelModalVisible(true)}>
+                    <Text style={styles.textButton}>DELETE</Text>
+                </Pressable>
+
+                <Pressable style={styles.button} onPress={()=>setUpdModalVisible(true)}>
+                    <Text style={styles.textButton}>ATUALIZAR</Text>
+                </Pressable>
+            </View>
+            
             <Modal
                 animationType="slide"
                 transparent={true}
@@ -49,13 +64,18 @@ function ItemUser({itemUser}){
             >
                 <View style={styles.itemContainer}>
                     <Text style={styles.itemtexto}>Deletar {itemUser.name} - {itemUser.id}?</Text>
-                    <Button title="Deletar" onPress={deletar} />
-                    <Button title="Não Deletar" onPress={()=>setDelModalVisible(false)} />
+                    
+                    <View style={styles.pressContainer}>
+                        <Pressable style={styles.button} onPress={deletar}>
+                            <Text style={styles.textButton}>Deletar</Text>
+                        </Pressable>
+                        <Pressable style={styles.button} onPress={()=>setDelModalVisible(false)}>
+                            <Text style={styles.textButton}>NÃO Deletar</Text>
+                        </Pressable>
+                    </View>
+
                 </View>
-            </Modal>
-            <Pressable onPress={()=>setDelModalVisible(true)}>
-                <Text>DELETE</Text>
-            </Pressable>
+            </Modal>           
 
             <Modal
                 animationType="slide"
@@ -80,15 +100,21 @@ function ItemUser({itemUser}){
                         value={uabout}
                         style={styles.textInput}
                     />
+                    
+                    <View style={styles.pressContainer}>
+                        <Pressable style={styles.button} onPress={()=>{atualizar()}} >
+                            <Text style={styles.textButton}>Atualizar</Text>
+                        </Pressable>
 
-                    <Button title="Atualizar FAKE" onPress={atualizar} />
-                    <Button title="Cancelar" onPress={()=>setUpdModalVisible(false)} />
+                        <Pressable style={styles.button} onPress={()=>setUpdModalVisible(false)} >
+                            <Text style={styles.textButton}>Cancelar</Text>
+                        </Pressable>
+                    </View>
+
                 </View>
             </Modal>
 
-            <Pressable onPress={()=>setUpdModalVisible(true)}>
-                <Text>ATUALIZAR</Text>
-            </Pressable>
+            
             
         </View>
     )

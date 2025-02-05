@@ -40,7 +40,7 @@ export default class Model{
         pending.push(this.email.length == 0 ? 'email' : null); 
         pending.push(this.name.length == 0 ? 'name' : null);
 
-        console.log('pending  l: '+pending.length)
+        
 
         for(let i = 0; i<3 ;i++){
             
@@ -53,7 +53,7 @@ export default class Model{
             
         }
             
-        msg = validated == false ? msg : 'Objeto validado.';
+        msg = validated == false ? msg : 'Campos requeridos preenchidos. Ok!';
         //do contrário, seguem os valores preestabelecidos
         console.log(msg);
         return [validated, msg];
