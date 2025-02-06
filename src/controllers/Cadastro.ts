@@ -42,7 +42,6 @@ class Cadastro{
 
     public async register(user:User){
 
-        console.log('User: ' + (user instanceof User).toString());
         console.log('Iniciando   register()...');
         try{
             let response = await api.post('/users', user.get('post'));
@@ -70,7 +69,6 @@ class Cadastro{
 
     public async update(user:User, id:string){
 
-        console.log('User: ' + (user instanceof User).toString());
         console.log('Iniciando   update()...');
         
         try{

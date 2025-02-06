@@ -63,17 +63,22 @@ export default class Model{
 
     private valiName(){
         this.pending.push(this.name.length == 0 ? 'name' : 'ok');
+        console.log('nome require:')
         console.log(this.pending)
     }
 
     private valiEmail(){
         this.pending.push(this.email.length == 0 ? 'email' : 'ok');
+        console.log('email require:')
+        console.log(this.pending)
     }
 
     private valiPassword(){
         let strpass = this.password;
         let l = strpass.toString().length;
         this.pending.push(l == 0 ? 'password' : 'ok');
+        console.log('password require:')
+        console.log(this.pending)
     }
 
     private pendingIterator(qtd:number):Array<boolean|string>{
@@ -96,9 +101,9 @@ export default class Model{
     public validateRequiredsCreate():Array<any>{
 
         //análise das entradas
-        this.valiName;
-        this.valiEmail;
-        this.valiPassword;
+        this.valiName();
+        this.valiEmail();
+        this.valiPassword();
 
         let [validated, msg] = this.pendingIterator(3);
         if (!validated){
@@ -135,7 +140,7 @@ export default class Model{
         msg = 'Campos requeridos preenchidos. Ok!';
         console.log(msg);
         
-        msg = 'Dados para criação APROVADOS!'
+        msg = 'Dados para atualização APROVADOS!'
         console.log(msg);
         return [validated, msg];
     }
