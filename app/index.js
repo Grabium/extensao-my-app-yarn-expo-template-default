@@ -1,15 +1,14 @@
 import { useNetInfo } from '@react-native-community/netinfo';
-import styles from '../cascade-styles/styles';
+import styles from '../styles';
 import React, {useEffect, useState} from "react";
 import { View, Text, FlatList, Alert, Pressable } from "react-native";
 import cadastro from '../src/controllers/Cadastro';
-import ItemUser from "./ItemUser";
-import { Link, useRouter } from 'expo-router';
+import ItemUser from "../comonents/ItemUser";
+import { Link } from 'expo-router';
 
-export default function App(){
+export default function UserList(){
 
   const netInfo = useNetInfo();//{type, isConnected}
-  const router  = useRouter();
 
   const [refreshing, setRefreshing] = useState(false);
   const [users, setUsers] = useState([]);
@@ -58,7 +57,7 @@ export default function App(){
       {netInfo.isConnected ? <Text style={styles.connected}>Conectado: {netInfo.type}</Text> : <Text style={styles.disconnected}>Conecte-se à uma rede</Text>}
       <Text style={styles.text}>Lista de Registros</Text>
 
-      <Link href="/CriarScreen" asChild>
+      <Link href="/Criar" asChild>
         <Pressable style={styles.button}>
           <Text style={styles.textButton}>Novo</Text>
         </Pressable>

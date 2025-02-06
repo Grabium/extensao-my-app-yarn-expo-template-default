@@ -45,7 +45,7 @@ class Cadastro{
         console.log('User: ' + (user instanceof User).toString());
         console.log('Iniciando   register()...');
         try{
-            let response = await api.post('/users', user.get());
+            let response = await api.post('/users', user.get('post'));
             let data     = response.data.data;
             let msg      = response.data.msg;
             
@@ -60,7 +60,7 @@ class Cadastro{
         
         }catch(error:any){
             const resp = {
-                msg    : 'Não foi possível concluir: '+error.response.data
+                msg    : 'Não foi possível concluir: '+error.response.data.msg
             };
 
             console.log(resp.msg);
@@ -72,10 +72,9 @@ class Cadastro{
 
         console.log('User: ' + (user instanceof User).toString());
         console.log('Iniciando   update()...');
-        console.log(user.get().password);
         
         try{
-            let response = await api.put('/users/'+id, user.get());
+            let response = await api.put('/users/'+id, user.get('put'));
             let data     = response.data.data;
             let msg      = response.data.msg;
             
@@ -89,8 +88,10 @@ class Cadastro{
             return resp;
         
         }catch(error:any){
+            const m = error.response.data;
+            console.dir(m);
             const resp = {
-                msg    : 'Não foi possível concluir: '+error.response.data
+                msg    : 'Não foi possível concluir: '+m.message
             };
 
             console.log(resp.msg);

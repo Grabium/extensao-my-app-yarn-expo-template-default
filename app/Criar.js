@@ -1,6 +1,6 @@
-import React, {useState, useEffect} from "react";
+import React, { useState } from "react";
 import { View, Text,TextInput, Pressable } from "react-native";
-import styles from '../cascade-styles/styles';
+import styles from '../styles';
 import cadastro from "../src/controllers/Cadastro";
 import User from "../src/models/User";
 import { Link } from "expo-router";
@@ -18,8 +18,10 @@ export default function Criar(){
     async function cadastrar(){
 
         Keyboard.dismiss();
-        const user = new User(name, email, password, about);
-        const valid   = user.validation();
+        const user = new User(name, about);
+        user.setEmail(email);
+        user.setPassword(password);
+        const valid = user.validateRequiredsCreate();
         
         if(valid[0] == false){
             alert(valid[1]);

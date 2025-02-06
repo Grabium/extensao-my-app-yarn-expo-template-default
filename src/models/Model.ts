@@ -2,70 +2,146 @@
 
 export default class Model{
 
-    protected name:       string;
-    protected email:      string;
-    protected password:   number;
-    protected about:      string;
+    protected name:       string = '';
+    protected email:      string = '';
+    protected password:   number = 0;
+    protected about:      string = 'Atualize mais tarde.';
+    private   pending:    Array<string|null> = [];
 
     constructor(
         name:       string,
-        email:      string,
-        password:   number,
         about:      string
     ){
             
         this.name     = name;
-        this.email    = email;
-        this.password = password;
         this.about    = about;
+        
     }
 
-    /***
-     * return string    to not-validated
-     * return undefined to validated
+
+    /*****
+     * GETs e Sets
+    ******/
+
+    public setEmail(email:string):void{
+        this.email = email;
+    }
+
+    public getEmail():string{
+        return this.email;
+    }
+
+    public setPassword(password:number):void{
+        this.password = password;
+    }
+
+    public getPassword():number{
+        return this.password;
+    }
+
+    public get(method:string):any{
+
+        if(method === 'put'){
+            return {
+                name:     this.name,
+                about:    this.about 
+            }
+
+        }else if(method === 'post'){
+            return {
+                name:     this.name, 
+                email:    this.email,
+                password: this.password,
+                about:    this.about 
+            }
+        }
+    } 
+
+    /****
+     * Validações
     ****/
 
-    public validateRequireds():Array<any>{
-       
-        //valores preestabelecidos
-        let validated = true;
-        let msg = 'Campo(s) requerido(s):';
-        let pending = [];
-        
+    private valiName(){
+        this.pending.push(this.name.length == 0 ? 'name' : 'ok');
+        console.log(this.pending)
+    }
 
-        //análise das entradas
+    private valiEmail(){
+        this.pending.push(this.email.length == 0 ? 'email' : 'ok');
+    }
+
+    private valiPassword(){
         let strpass = this.password;
         let l = strpass.toString().length;
-        pending.push(l == 0 ? 'password' : null);
-        pending.push(this.email.length == 0 ? 'email' : null); 
-        pending.push(this.name.length == 0 ? 'name' : null);
+        this.pending.push(l == 0 ? 'password' : 'ok');
+    }
 
-        
+    private pendingIterator(qtd:number):Array<boolean|string>{
+        //valores iniciais:
+        let validated = true;
+        let msg = 'Campo(s) requerido(s):';
 
-        for(let i = 0; i<3 ;i++){
-            
+        for(let i = 0; i<qtd ;i++){    
             //caso falte um dos requeridos
-            if(pending[i] != null){
-                msg = msg +' ['+ pending[i]+']';
+            if(this.pending[i] !== 'ok'){
+                console.log(this.pending[i]);
+                msg = msg +' ['+ this.pending[i]+']';
                 validated = false;
             }
-            
-            
         }
-            
-        msg = validated == false ? msg : 'Campos requeridos preenchidos. Ok!';
-        //do contrário, seguem os valores preestabelecidos
+
+        return [validated, msg];
+    }
+
+    public validateRequiredsCreate():Array<any>{
+
+        //análise das entradas
+        this.valiName;
+        this.valiEmail;
+        this.valiPassword;
+
+        let [validated, msg] = this.pendingIterator(3);
+        if (!validated){
+            console.log(msg);
+            return [validated, msg];
+        }
+        msg = 'Campos requeridos preenchidos. Ok!';
+        console.log(msg);
+
+        [validated, msg] = this.validateEmail();
+        if (!validated){
+            console.log(msg);
+            return [validated, msg];
+        }
+        msg = 'Email está Ok!';
+        console.log(msg);
+
+        
+        msg = 'Dados para criação APROVADOS!'
         console.log(msg);
         return [validated, msg];
     }
 
-    /***
-     * true  = validated
-     * false = not-validated
-    ***/
+    public validateRequiredsUpdate():Array<boolean|string>{
+        
+        //análise do único campo obrigatório: nome.
+        this.valiName();
+
+        let [validated, msg] = this.pendingIterator(1);
+        if (!validated){
+            console.log(msg);
+            return [validated, msg];
+        }
+        msg = 'Campos requeridos preenchidos. Ok!';
+        console.log(msg);
+        
+        msg = 'Dados para criação APROVADOS!'
+        console.log(msg);
+        return [validated, msg];
+    }
     
-    public validateEmail():Array<any>{
-        const ifValid = this.email == this.name+'@'+this.name ? [true, 'Campo [email] válido'] : [false, 'ATENÇÃO Campo: [email] inválido!'];
-        return ifValid;
+    public validateEmail():Array<boolean|string>{
+        const validated = this.email == this.name+'@foo.com' ? [true, 'Campo [email] válido'] : [false, 'ATENÇÃO Campo: [email] inválido! Use <nome>@foo.com'];
+        return validated;
     }
 } 

@@ -1,5 +1,5 @@
-import { View, Text, Pressable, Alert, Modal, Button, TextInput, Keyboard } from "react-native";
-import styles from '../cascade-styles/styles';
+import { View, Text, Pressable, Alert, Modal, TextInput, Keyboard } from "react-native";
+import styles from '../styles';
 import cadastro from "../src/controllers/Cadastro";
 import { useState } from "react";
 import User from "../src/models/User";
@@ -26,7 +26,13 @@ function ItemUser({itemUser}){
 
     function atualizar(){
         Keyboard.dismiss();
-        const user = new User(uname, itemUser.email, 'sehnaFalsa', uabout);
+        const user = new User(uname, uabout);
+        const valid   = user.validateRequiredsUpdate();
+        
+        if(valid[0] == false){
+            alert(valid[1]);
+            return;
+        }
 
         cadastro.update(user, itemUser.id)
         .then((resp)=>{
@@ -60,9 +66,10 @@ function ItemUser({itemUser}){
                 animationType="slide"
                 transparent={true}
                 visible={isDelModalVisible}
+                style={styles.modalBackGround}
                 
             >
-                <View style={styles.itemContainer}>
+                <View style={styles.modalBackGround}>
                     <Text style={styles.itemtexto}>Deletar {itemUser.name} - {itemUser.id}?</Text>
                     
                     <View style={styles.pressContainer}>
@@ -83,7 +90,7 @@ function ItemUser({itemUser}){
                 visible={isUpdModalVisible}
                 
             >
-                <View style={styles.itemContainer}>
+                <View style={styles.modalBackGround}>
                     
                     <Text style={styles.itemtexto}>Atualizar {itemUser.name} - {itemUser.id}</Text>
                     
